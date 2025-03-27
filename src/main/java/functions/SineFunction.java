@@ -6,18 +6,25 @@ import java.math.MathContext;
 public class SineFunction implements Function {
     private final static MathContext MATH_CONTEXT = MathContext.DECIMAL128;
     private static final BigDecimal PI = new BigDecimal("3.14159265358979323846");
-    private static final BigDecimal HALF_PI = PI.divide(BigDecimal.valueOf(2), MATH_CONTEXT);
+    private static final BigDecimal HALF_PI = new BigDecimal("1.57079632679489661923");
+    private static final BigDecimal TWO_PI = new BigDecimal("6.28318530717958647692");
 
     @Override
     public double calculate(double x, double epsilon) {
-        BigDecimal xBD = new BigDecimal(x);
+        return calculate(new BigDecimal(x), epsilon);
+    }
+
+    public double calculate(BigDecimal xBD, double epsilon){
         BigDecimal epsilonBD = new BigDecimal(epsilon);
         BigDecimal result = BigDecimal.ZERO;
         BigDecimal term;
         int n = 0;
 
         if (xBD.abs().compareTo(HALF_PI) > 0) {
-            throw new IllegalArgumentException("x should be in range [-pi/2, pi/2]");
+            xBD = xBD.remainder(TWO_PI, MATH_CONTEXT);
+            if (xBD.compareTo(PI) > 0) {
+                xBD = xBD.subtract(TWO_PI, MATH_CONTEXT);
+            }
         }
 
         do { //(-1)^n * x^(2n+1)/(2n+1)!
@@ -32,4 +39,6 @@ public class SineFunction implements Function {
         } while (term.abs().compareTo(epsilonBD) > 0);
         return result.doubleValue();
     }
+
 }
+
