@@ -1,11 +1,8 @@
 package functions;
 
-import java.math.MathContext;
-
 public class Logarithm implements Function {
     private final NaturalLogarithm ln;
     private final double base;
-    private static final MathContext MC = new MathContext(128);
 
     public Logarithm(NaturalLogarithm ln, double base) {
         this.ln = ln;
