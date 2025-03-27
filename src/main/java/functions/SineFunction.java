@@ -20,7 +20,7 @@ public class SineFunction implements Function {
             throw new IllegalArgumentException("x should be in range [-pi/2, pi/2]");
         }
 
-        do {
+        do { //(-1)^n * x^(2n+1)/(2n+1)!
             BigDecimal numerator = xBD.pow(2 * n + 1);
             if (n % 2 != 0) {
                 numerator = numerator.negate();
