@@ -17,6 +17,9 @@ public class TangentFunction implements Function{
 
     @Override
     public double calculate(double x, double epsilon) {
+        if (Double.isNaN(x) || Double.isInfinite(x)) {
+            throw new IllegalArgumentException("x must be a finite number");
+        }
         BigDecimal xBD = new BigDecimal(Double.toString(x), MATH_CONTEXT);
         if (xBD.abs().compareTo(HALF_PI.subtract(new BigDecimal(epsilon))) > 0) {
             throw new ArithmeticException("Tangent about infinity at pi/2 + pi_k");

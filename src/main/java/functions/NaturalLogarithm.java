@@ -8,8 +8,8 @@ public class NaturalLogarithm implements Function {
 
     @Override
     public double calculate(double z, double epsilon) {
-        if (z <= 0) {
-            throw new IllegalArgumentException("x must be positive");
+        if (z <= 0 || Double.isNaN(z) || Double.isInfinite(z)) {
+            throw new IllegalArgumentException();
         }
 
         //(z - 1)/(z + 1)

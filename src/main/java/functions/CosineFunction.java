@@ -14,6 +14,9 @@ public class CosineFunction implements Function {
 
     @Override
     public double calculate(double x, double epsilon) {
+        if (Double.isNaN(x) || Double.isInfinite(x)) {
+            throw new IllegalArgumentException();
+        }
         // cos^2(a) + sin^2(a) = 1
         // cos(x) = sin(x + pi/2)
         BigDecimal xBD = new BigDecimal(x, MATH_CONTEXT);

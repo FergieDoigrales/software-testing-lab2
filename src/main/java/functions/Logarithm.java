@@ -11,7 +11,7 @@ public class Logarithm implements Function {
 
     @Override
     public double calculate(double x, double epsilon) {
-        if (x <= 0) {
+        if (x <= 0 || Double.isNaN(x) || Double.isInfinite(x)) {
             throw new IllegalArgumentException("x must be positive");
         }
         if (base < 0 || base == 1) {

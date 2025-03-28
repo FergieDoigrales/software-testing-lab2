@@ -20,6 +20,10 @@ public class SineFunction implements Function {
         BigDecimal term;
         int n = 0;
 
+        if (Double.isNaN(xBD.doubleValue()) || Double.isInfinite(xBD.doubleValue())) {
+            throw new IllegalArgumentException();
+        }
+
         if (xBD.abs().compareTo(HALF_PI) > 0) {
             xBD = xBD.remainder(TWO_PI, MATH_CONTEXT);
             if (xBD.compareTo(PI) > 0) {

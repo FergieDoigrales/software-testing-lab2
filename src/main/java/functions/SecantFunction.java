@@ -9,6 +9,9 @@ public class SecantFunction implements Function {
 
     @Override
     public double calculate(double x, double epsilon) {
+        if (Double.isNaN(x) || Double.isInfinite(x)) {
+            throw new IllegalArgumentException("x must be a finite number");
+        }
         double cosValue = cosine.calculate(x, epsilon/2);
 
         if (Math.abs(cosValue) < epsilon) {
