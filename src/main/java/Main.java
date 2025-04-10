@@ -14,6 +14,8 @@ public class Main {
         System.out.println(cosine.calculate(Math.PI/2, 1e-15));
         TangentFunction tangent = new TangentFunction(sine, cosine);
         System.out.println(tangent.calculate(Math.PI/4, 1e-15));
+        FunctionSystem functionSystem = new FunctionSystem();
+        System.out.println("KROTOVUHA " + functionSystem.solve(Math.PI/2, 1e-15));
         CsvExporter.exportToCsv(
                 new NaturalLogarithm(),
                 0.1, 5.0, 0.5, 1e-6,
