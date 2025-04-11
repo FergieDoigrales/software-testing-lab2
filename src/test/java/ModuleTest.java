@@ -5,6 +5,8 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.io.IOException;
+
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -29,6 +31,8 @@ public abstract class ModuleTest {
     protected static CosineFunction cosineWithSinMock;
     protected static TangentFunction tangentWithSinAndCosMock;
     protected static CosecantFunction cosecantWithSinMock;
+    protected static TangentFunction tangentWithCosMock;
+    protected static TangentFunction tangentWithSinMock;
 
 
     protected static NaturalLogarithm nL;
@@ -39,6 +43,7 @@ public abstract class ModuleTest {
     protected static CosineFunction cosine;
     protected static TangentFunction tangent;
     protected static CosecantFunction cosecant;
+
 
 
     @BeforeAll
@@ -69,6 +74,9 @@ public abstract class ModuleTest {
         cosine = new CosineFunction(sine);
         tangent = new TangentFunction(sine, cosine);
         cosecant = new CosecantFunction(sine);
+
+        tangentWithCosMock = new TangentFunction(sine, cosMock);
+        tangentWithSinMock = new TangentFunction(sinMock, cosine);
 
         when(sinMock.calculate(-0.973622, EPSILON)).thenReturn(-0.8269278129793861);
         when(sinMock.calculate(-1.032997, EPSILON)).thenReturn(-0.8588380488265);

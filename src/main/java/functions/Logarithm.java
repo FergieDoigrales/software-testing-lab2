@@ -1,5 +1,7 @@
 package functions;
 
+import java.io.IOException;
+
 public class Logarithm implements Function {
     private final NaturalLogarithm ln;
     private final double base;

@@ -1,5 +1,6 @@
 package functions;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.MathContext;
 
@@ -20,19 +21,17 @@ public class TangentFunction implements Function{
         if (Double.isNaN(x) || Double.isInfinite(x)) {
             throw new IllegalArgumentException("x must be a finite number");
         }
-        BigDecimal xBD = new BigDecimal(Double.toString(x), MATH_CONTEXT);
+//        BigDecimal xBD = new BigDecimal(Double.toString(x), MATH_CONTEXT);
 //        if (xBD.abs().compareTo(HALF_PI.subtract(new BigDecimal(epsilon))) > 0) {
 //            throw new ArithmeticException("Tangent about infinity at pi/2 + pi_k");
 //        }
 
-        double sin = sine.calculate(xBD, epsilon/2);
+        double sin = sine.calculate(x, epsilon/2);
         double cos = cosine.calculate(x, epsilon/2);
-
 //        // cos +-= 0
 //        if (Math.abs(cos) < epsilon) {
 //            throw new ArithmeticException("Undefined tangent (cosine equals zero)");
 //        }
-
         return sin / cos;
     }
 }

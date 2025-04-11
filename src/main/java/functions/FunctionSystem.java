@@ -1,5 +1,7 @@
 package functions;
 
+import java.io.IOException;
+
 public class FunctionSystem implements Function {
     private final SineFunction sin;
     private final NaturalLogarithm ln;
