@@ -20,7 +20,7 @@ public class Logarithm implements Function {
 
         //log_a(x) = ln(x)/ln(a)
         double lnX = ln.calculate(x, epsilon);
-        double lnBase =ln.calculate(base, epsilon);
+        double lnBase = ln.calculate(base, epsilon);
 
         return lnX / lnBase;
     }

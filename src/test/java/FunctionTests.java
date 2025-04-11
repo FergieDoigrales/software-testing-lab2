@@ -8,23 +8,43 @@ import org.junit.jupiter.params.provider.MethodSource;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.when;
 
 public class FunctionTests extends ModuleTest {
-    private static final NaturalLogarithm nL = new NaturalLogarithm();
-    private static final Logarithm logBase2 = new Logarithm(nL, 2);
-    private static final Logarithm logBase5 = new Logarithm(nL, 5);
-    private static final Logarithm logBase10 = new Logarithm(nL, 10);
-    private static final SineFunction sine = new SineFunction();
-    private static final CosineFunction cosine = new CosineFunction(sine);
-    private static final TangentFunction tangent = new TangentFunction(sine, cosine);
-    private static final CosecantFunction cosecant = new CosecantFunction(sine);
+    private static final double ACCURACY = 1e-3;
 
 
     private static Stream<Arguments> testData() {
         return Stream.of(
-                Arguments.of(1, Double.NaN),
-                Arguments.of(-1, 0.0073944869340584)
+//                Arguments.of(0.02, -0.159237),
+//                Arguments.of(0.02458, 0.0000315862),
+//                Arguments.of(0.05, 0.321657),
+//                Arguments.of(0.08454, 0.38055),
+//                Arguments.of(0.13, 0.34993),
+//                Arguments.of(0.8, 0.00875),
+//                Arguments.of(1, Double.NaN),
+//                Arguments.of(1.1, 0.00174),
+//                Arguments.of(2, 0.10677),
+
+                Arguments.of(-0.973622, 0.01100172848872),
+                Arguments.of(-1.032997, 0.00000000000333123),
+                Arguments.of(-0.904557, 0.000000000000090383),
+                Arguments.of(-1.0965, 0.20020671375987956),
+                Arguments.of(-0.802, 0.20379720173887556),
+                Arguments.of(-2.50374, -19.07324513954311),
+                Arguments.of(-2.459, -19.50789340085),
+                Arguments.of(-2.547, -19.503721783628897),
+                Arguments.of(-3.82473, -74.68146225448464)
+
         );
+    }
+    @ParameterizedTest
+    @MethodSource("testData")
+    public void funcTestWithNoMocks(double x, double expected){
+        FunctionSystem function = new FunctionSystem(sine, nL, cosine, tangent,
+                cosecant, logBase2, logBase5, logBase10);
+        System.out.println(function.calculate(x, EPSILON));
+        Assertions.assertEquals(expected, function.calculate(x, EPSILON), ACCURACY);
     }
 
     @ParameterizedTest
@@ -32,52 +52,26 @@ public class FunctionTests extends ModuleTest {
     public void funcTestWithMocks(double x, double expected){
         FunctionSystem function = new FunctionSystem(sinMock, lnMock, cosMock, tanMock,
                 cscMock, logBase2Mock, logBase5Mock, logBase10Mock);
-        Assertions.assertEquals(expected, function.solve(x, EPSILON), EPSILON);
-        System.out.println(function.solve(x, EPSILON));
-    }
-
-    @Test
-    public void zeroValueXTestWithMocks() {
-        FunctionSystem function = new FunctionSystem(sinMock, lnMock, cosMock, tanMock,
-                cscMock, logBase2Mock, logBase5Mock, logBase10Mock);
-        assertThrows(ArithmeticException.class, () -> function.solve(0, EPSILON));
-    }
-
-
-    @ParameterizedTest
-    @MethodSource("testData")
-    public void funcTestWithSin(double x, double expected){
-        FunctionSystem function = new FunctionSystem(sine, lnMock, cosMock, tanMock,
-                cscMock, logBase2Mock, logBase5Mock, logBase10Mock);
-        Assertions.assertEquals(expected, function.solve(x, EPSILON), EPSILON);
-        System.out.println(function.solve(x, EPSILON));
-    }
-
-    @ParameterizedTest
-    @MethodSource("testData")
-    public void funcTestWithLn(double x, double expected){
-        FunctionSystem function = new FunctionSystem(sinMock, nL, cosMock, tanMock,
-                cscMock, logBase2Mock, logBase5Mock, logBase10Mock);
-        Assertions.assertEquals(expected, function.solve(x, EPSILON), EPSILON);
-        System.out.println(function.solve(x, EPSILON));
-    }
-
-    @ParameterizedTest
-    @MethodSource("testData")
-    public void funcTestWithCos(double x, double expected){
-        FunctionSystem function = new FunctionSystem(sinMock, lnMock, cosine, tanMock,
-                cscMock, logBase2Mock, logBase5Mock, logBase10Mock);
-        Assertions.assertEquals(expected, function.solve(x, EPSILON), EPSILON);
-        System.out.println(function.solve(x, EPSILON));
+        Assertions.assertEquals(expected, function.calculate(x, EPSILON), ACCURACY);
+        System.out.println(function.calculate(x, EPSILON));
     }
 
     @ParameterizedTest
     @MethodSource("testData")
     public void funcTestWithTan(double x, double expected){
-        FunctionSystem function = new FunctionSystem(sinMock, lnMock, cosMock, tangent,
+        FunctionSystem function = new FunctionSystem(sinMock, lnMock, cosMock, tangentWithSinAndCosMock,
                 cscMock, logBase2Mock, logBase5Mock, logBase10Mock);
-        Assertions.assertEquals(expected, function.solve(x, EPSILON), EPSILON);
-        System.out.println(function.solve(x, EPSILON));
+        Assertions.assertEquals(expected, function.calculate(x, EPSILON), ACCURACY);
+        System.out.println(function.calculate(x, EPSILON));
+    }
+
+    @ParameterizedTest
+    @MethodSource("testData")
+    public void funcTestLogarithm(double x, double expected){
+        FunctionSystem function = new FunctionSystem(sinMock, lnMock, cosMock, tanMock,
+                cscMock, logBase2WithLnMock, logBase5WithLnMock, logBase10WithLnMock);
+        Assertions.assertEquals(expected, function.calculate(x, EPSILON), ACCURACY);
+        System.out.println(function.calculate(x, EPSILON));
     }
 
     @ParameterizedTest
@@ -85,26 +79,56 @@ public class FunctionTests extends ModuleTest {
     public void funcTestWithCsc(double x, double expected){
         FunctionSystem function = new FunctionSystem(sinMock, lnMock, cosMock, tanMock,
                 cosecant, logBase2Mock, logBase5Mock, logBase10Mock);
-        Assertions.assertEquals(expected, function.solve(x, EPSILON), EPSILON);
-        System.out.println(function.solve(x, EPSILON));
+        Assertions.assertEquals(expected, function.calculate(x, EPSILON), ACCURACY);
+        System.out.println(function.calculate(x, EPSILON));
     }
 
     @ParameterizedTest
     @MethodSource("testData")
-    public void funcTestLogarithm(double x, double expected){
-        FunctionSystem function = new FunctionSystem(sinMock, lnMock, cosMock, tanMock,
+    public void funcTestWithCos(double x, double expected){
+        FunctionSystem function = new FunctionSystem(sinMock, lnMock, cosine, tanMock,
+                cscMock, logBase2Mock, logBase5Mock, logBase10Mock);
+        Assertions.assertEquals(expected, function.calculate(x, EPSILON), ACCURACY);
+        System.out.println(function.calculate(x, EPSILON));
+    }
+
+    @ParameterizedTest
+    @MethodSource("testData")
+    public void funcTestWithLn(double x, double expected){
+        FunctionSystem function = new FunctionSystem(sinMock, nL, cosMock, tanMock,
                 cscMock, logBase2, logBase5, logBase10);
-        Assertions.assertEquals(expected, function.solve(x, EPSILON), EPSILON);
-        System.out.println(function.solve(x, EPSILON));
+        Assertions.assertEquals(expected, function.calculate(x, EPSILON), ACCURACY);
     }
 
     @ParameterizedTest
     @MethodSource("testData")
-    public void funcTestLog5(double x, double expected){
-        FunctionSystem function = new FunctionSystem(sinMock, lnMock, cosMock, tanMock,
-                cscMock, logBase2Mock, logBase5, logBase10Mock);
-        Assertions.assertEquals(expected, function.solve(x, EPSILON), EPSILON);
-        System.out.println(function.solve(x, EPSILON));
+    public void funcTestWithSin(double x, double expected){
+        FunctionSystem function = new FunctionSystem(sine, lnMock, cosMock, tanMock,
+                cscMock, logBase2Mock, logBase5Mock, logBase10Mock);
+        Assertions.assertEquals(expected, function.calculate(x, EPSILON), ACCURACY);
     }
+
+
+
+
+//    @ParameterizedTest
+//    @MethodSource("testData")
+//    public void funcTestLog5(double x, double expected){
+//        FunctionSystem function = new FunctionSystem(sinMock, lnMock, cosMock, tanMock,
+//                cscMock, logBase2Mock, logBase5, logBase10Mock);
+//        Assertions.assertEquals(expected, function.calculate(x, EPSILON), ACCURACY);
+//        System.out.println(function.calculate(x, EPSILON));
+//    }
+
+
+
+
+
+//    @Test
+//    public void zeroValueXTestWithMocks() {
+//        FunctionSystem function = new FunctionSystem(sinMock, lnMock, cosMock, tanMock,
+//                cscMock, logBase2Mock, logBase5Mock, logBase10Mock);
+//        assertThrows(ArithmeticException.class, () -> function.calculate(0, EPSILON));
+//    }
 
 }

@@ -1,0 +1,12 @@
+                Arguments.of(-0.973622, 0.01100172848872),
+                Arguments.of(-1.032997, 0.0000315862),
+                Arguments.of(-0.904557, 0.321657),
+                Arguments.of(-1.0965, 0.38055),
+                Arguments.of(-0.802, 0.34993),
+                Arguments.of(-2.50374, 0.00875),
+                Arguments.of(-2.459, Double.NaN),
+                Arguments.of(-2.547, 0.00174),
+                Arguments.of(-3.82473, 0.10677)
+
+
+                (((((csc(-3.82473) - cos(-3.82473)) - tan(-3.82473)) ^ 2) / cos(-3.82473)) * ((tan(-3.82473) - csc(-3.82473)) ^ 2))

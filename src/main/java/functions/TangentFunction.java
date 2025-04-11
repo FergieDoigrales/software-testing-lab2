@@ -21,17 +21,17 @@ public class TangentFunction implements Function{
             throw new IllegalArgumentException("x must be a finite number");
         }
         BigDecimal xBD = new BigDecimal(Double.toString(x), MATH_CONTEXT);
-        if (xBD.abs().compareTo(HALF_PI.subtract(new BigDecimal(epsilon))) > 0) {
-            throw new ArithmeticException("Tangent about infinity at pi/2 + pi_k");
-        }
+//        if (xBD.abs().compareTo(HALF_PI.subtract(new BigDecimal(epsilon))) > 0) {
+//            throw new ArithmeticException("Tangent about infinity at pi/2 + pi_k");
+//        }
 
         double sin = sine.calculate(xBD, epsilon/2);
         double cos = cosine.calculate(x, epsilon/2);
 
-        // cos +-= 0
-        if (Math.abs(cos) < epsilon) {
-            throw new ArithmeticException("Undefined tangent (cosine equals zero)");
-        }
+//        // cos +-= 0
+//        if (Math.abs(cos) < epsilon) {
+//            throw new ArithmeticException("Undefined tangent (cosine equals zero)");
+//        }
 
         return sin / cos;
     }

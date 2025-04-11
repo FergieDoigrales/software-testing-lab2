@@ -1,6 +1,6 @@
 package functions;
 
-public class FunctionSystem {
+public class FunctionSystem implements Function {
     private final SineFunction sin;
     private final NaturalLogarithm ln;
     private final CosineFunction cos;
@@ -33,7 +33,7 @@ public class FunctionSystem {
         this.log10 = new Logarithm(ln, 10);
     }
 
-    public double solve(double x, double epsilon) {
+    public double calculate(double x, double epsilon) {
         if (Double.isNaN(x) || Double.isInfinite(x) || Double.isNaN(epsilon) || Double.isInfinite(epsilon)) {
             throw new IllegalArgumentException("x must be a finite number");
         }
@@ -43,7 +43,8 @@ public class FunctionSystem {
                     cos.calculate(x, epsilon)) * (Math.pow(tan.calculate(x, epsilon) - csc.calculate(x, epsilon), 2))));
         } else {
             return (Math.pow((((log10.calculate(x, epsilon) + log2.calculate(x, epsilon)) - log5.calculate(x, epsilon)) -
-                    log2.calculate(x, epsilon)),2) * ((ln.calculate(x, epsilon) / (log5.calculate(x, epsilon) - log10.calculate(x, epsilon))) + log2.calculate(x, epsilon)));
+                    log2.calculate(x, epsilon)),2) * ((ln.calculate(x, epsilon) /
+                    (log5.calculate(x, epsilon) - log10.calculate(x, epsilon))) + log2.calculate(x, epsilon)));
         }
     }
 }
