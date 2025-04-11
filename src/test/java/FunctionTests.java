@@ -44,7 +44,6 @@ public class FunctionTests extends ModuleTest {
         FunctionSystem function = new FunctionSystem(sinMock, lnMock, cosMock, tanMock,
                 cscMock, logBase2Mock, logBase5Mock, logBase10Mock);
         Assertions.assertEquals(expected, function.calculate(x, EPSILON), ACCURACY);
-        System.out.println(function.calculate(x, EPSILON));
     }
 
     @ParameterizedTest
@@ -53,7 +52,6 @@ public class FunctionTests extends ModuleTest {
         FunctionSystem function = new FunctionSystem(sinMock, lnMock, cosMock, tangentWithSinAndCosMock,
                 cscMock, logBase2Mock, logBase5Mock, logBase10Mock);
         Assertions.assertEquals(expected, function.calculate(x, EPSILON), ACCURACY);
-        System.out.println(function.calculate(x, EPSILON));
     }
 
     @ParameterizedTest
@@ -62,7 +60,6 @@ public class FunctionTests extends ModuleTest {
         FunctionSystem function = new FunctionSystem(sinMock, lnMock, cosMock, tanMock,
                 cscMock, logBase2WithLnMock, logBase5WithLnMock, logBase10WithLnMock);
         Assertions.assertEquals(expected, function.calculate(x, EPSILON), ACCURACY);
-        System.out.println(function.calculate(x, EPSILON));
     }
 
     @ParameterizedTest
@@ -71,7 +68,6 @@ public class FunctionTests extends ModuleTest {
         FunctionSystem function = new FunctionSystem(sinMock, lnMock, cosMock, tanMock,
                 cosecantWithSinMock, logBase2Mock, logBase5Mock, logBase10Mock);
         Assertions.assertEquals(expected, function.calculate(x, EPSILON), ACCURACY);
-        System.out.println(function.calculate(x, EPSILON));
     }
 
     @ParameterizedTest
@@ -80,7 +76,6 @@ public class FunctionTests extends ModuleTest {
         FunctionSystem function = new FunctionSystem(sinMock, lnMock, cosine, tangentWithSinMock,
                 cscMock, logBase2Mock, logBase5Mock, logBase10Mock);
         Assertions.assertEquals(expected, function.calculate(x, EPSILON), ACCURACY);
-        System.out.println(function.calculate(x, EPSILON));
     }
 
     @ParameterizedTest
@@ -101,11 +96,11 @@ public class FunctionTests extends ModuleTest {
 
     @ParameterizedTest
     @MethodSource("testData")
-    public void funcTestWithNoMocks(double x, double expected){
+    public void funcTestWithNoMocks(double x, double expected) throws IOException {
         FunctionSystem function = new FunctionSystem(sine, nL, cosine, tangent,
                 cosecant, logBase2, logBase5, logBase10);
-        System.out.println(function.calculate(x, EPSILON));
         Assertions.assertEquals(expected, function.calculate(x, EPSILON), ACCURACY);
+//        CsvExporter.exportToCsv(function, x, x+20, 0.1, EPSILON, "results.csv");
     }
 
 }
